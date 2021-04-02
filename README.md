@@ -1,26 +1,45 @@
 # mcs_quarkus_poc
-## Modules relationship
-Parent POM
-	controller -> Common
-		   -> services
-		   -> data
-	services   -> data
-		   -> common
-		   -> repository
-	repository -> data
-	common     -> data
+## Launch
+You need to have *maven 3.6.3* and *java 11* to run the project  
 
-## Create Parent
+```
+mvn clean install
+mvn clean compile quarkus:dev -Ddebug
+```
+
+## Create a clean architecture
+The basic concept is to use the same way we do to build a multi-module maven project.  
+So to be more specific, we need to create a maven based-module project then change the runner as *Quarkus* instead of *Maven*.  
+
+## Structure (Goal)
+- Parent POM
+	- [Module 1] controller (*starter*)
+		- [Dependency] Common
+		- [Dependency] services
+		- [Dependency] data
+	- [Module 2] services
+		- [Dependency] data
+		- [Dependency] common
+		- [Dependency] repository
+	- [Module 3] repository
+		- [Dependency] data
+	- [Module 4] common
+		- [Dependency] data
+
+// TODO: Add diagram
+### Create Parent
+First, we need to create a parent to hold our modules. This is what we call **Parent POM**.  
 ```
 mvn archetype:generate -DgroupId=group.id -DartifactId=mcs_quarkus_poc
 ```
 
-## Set Parent as Parent
+### Set Parent as Parent
 ```xml
 <packaging>pom</packaging>
 ```
 
-## Add modules
+### Create modules
+'til now our parent pom has been created. Next, let's add some modules
 ```
 mvn archetype:generate -DgroupId=group.id  -DartifactId=controller  
 mvn archetype:generate -DgroupId=group.id  -DartifactId=services  
@@ -29,7 +48,7 @@ mvn archetype:generate -DgroupId=group.id  -DartifactId=data
 mvn archetype:generate -DgroupId=group.id  -DartifactId=common  
 ```
 
-## Add dependency
+### Add dependency between modules
 Add the following xml code to the module to add the dependency
 ```xml
 <dependency>
@@ -42,8 +61,8 @@ Add the following xml code to the module to add the dependency
 ```
 
 ## Run the maven project as Quarkus project
-### Modification under Parent POM
-Add the following xml code to parent pom
+### Modification Parent POM
+Add the following xml code to the parent pom
 ```xml
 <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -76,8 +95,8 @@ Add the following xml code to parent pom
 </build>
 ```
 
-### Modification under the main module
-Add to Controller pom
+### Modification main module (starter)
+Add to the Controller module's pom
 ```xml
 <properties>
     <quarkus-plugin.version>1.8.1.Final</quarkus-plugin.version>
@@ -104,7 +123,7 @@ Add to Controller pom
 
 ## Generate config file
 *application.properties file should be placed under the main module*  
-So, in our case, right click on the main module and open a terminal to execute the command below. 
+So, in our case, right click on the main module (*controller module*) and open a terminal to execute the command below. 
 ```
 mvn io.quarkus:quarkus-maven-plugin:1.8.1.Final:generate-config -Dfile=application.properties
 ```
@@ -112,16 +131,10 @@ mvn io.quarkus:quarkus-maven-plugin:1.8.1.Final:generate-config -Dfile=applicati
 ## Set host and port in application.properties
 ```
 quarkus.http.host=localhost
-quarkus.http.port=8081
+quarkus.http.port=8080
 ```
 
 ## Add extension
-Execute the command below directly on the terminal
 ```
 mvn quarkus:add-extension -Dextensions="resteasy, resteasy-jackson"
-```
-
-## Run
-```
-mvn clean compile quarkus:dev -Ddebug
 ```
