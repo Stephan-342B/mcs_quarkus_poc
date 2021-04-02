@@ -1,0 +1,4 @@
+org/mahefa/annotation/Service.class
+META-INF/panache-archive.marker
+org/mahefa/mapper/fruit/FruitMapper.class
+org/mahefa/mapper/fruit/FruitMapperImpl.class
