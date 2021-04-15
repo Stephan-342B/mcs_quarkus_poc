@@ -1,6 +1,6 @@
 # mcs_quarkus_poc
 ## Launch
-You need to have *maven 3.6.3* and *java 11* to run the project  
+You need to have *maven 3.6.3* and *java 11* to be able to run the project  
 
 ```
 mvn clean install
@@ -8,8 +8,7 @@ mvn clean compile quarkus:dev -Ddebug
 ```
 
 ## Create a clean architecture
-The basic concept is to use the same way we do to build a multi-module maven project.  
-So to be more specific, we need to create a maven based-module project then change the runner as *Quarkus* instead of *Maven*.  
+The basic concept is to use the same way we do to build a multi-module maven project. So, to be more specific, we need to create a maven based-module project then change the runner as *Quarkus* instead of *Maven*.  
 
 ## Structure (Goal)
 - Parent POM
@@ -26,7 +25,7 @@ So to be more specific, we need to create a maven based-module project then chan
 	- [Module 4] common
 		- [Dependency] data
 
-// TODO: Add diagram
+![](microservice_structure.png)
 ### Create Parent
 First, we need to create a parent to hold our modules. This is what we call **Parent POM**.  
 ```
