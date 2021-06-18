@@ -1,4 +1,4 @@
-# <span style="color:#313E50">SIMPLE QUARKUS PROJECT</span>
+# SIMPLE QUARKUS PROJECT
 ## Get started
 *Requirements:* **maven 3.6.3** and **java 11**   
 Clone or download the project then run the following commands. Hit **Enter** after each command line
@@ -79,7 +79,8 @@ Modify the parent pom.xml as follows
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
     <quarkus.platform.version>1.8.1.Final</quarkus.platform.version>
 </properties>
-....
+```
+```xml
 <dependencyManagement>
     <dependencies>
       <dependency>
@@ -91,7 +92,8 @@ Modify the parent pom.xml as follows
       </dependency>
     </dependencies>
 </dependencyManagement>
-....
+```
+```xml
 <build>
   <plugins>
     <plugin>
@@ -109,7 +111,8 @@ Change the controller pom.xml file as follows
 <properties>
     <quarkus-plugin.version>1.8.1.Final</quarkus-plugin.version>
  </properties>
-...
+```
+```xml
 <build>
   <plugins>
     <plugin>
@@ -130,7 +133,7 @@ Change the controller pom.xml file as follows
 ```
 
 And for the others (common, data, repository and services modules) like this one
-```
+```xml
 <build>
     <plugins>
         <plugin>
