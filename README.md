@@ -1,8 +1,4 @@
-<style>
-    H1{color:#313E50 !important;}
-</style>
-
-# QUARKUS PROJECT
+# <span style="color:#313E50">SIMPLE QUARKUS PROJECT</span>
 ## Get started
 *Requirements:* **maven 3.6.3** and **java 11**   
 Clone or download the project then run the following commands. Hit **Enter** after each command line
