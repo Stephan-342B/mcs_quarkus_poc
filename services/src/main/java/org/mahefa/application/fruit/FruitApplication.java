@@ -1,15 +1,17 @@
 package org.mahefa.application.fruit;
 
-import org.mahefa.data_transfert_object.FruitDTO;
+import org.bson.types.ObjectId;
+import org.mahefa.dto.FruitDTO;
+import org.mahefa.dto.PageableDTO;
 
 import java.util.List;
 
 public interface FruitApplication {
 
-    List<FruitDTO> add(FruitDTO fruitDTO);
-
-    List<FruitDTO> findAll();
-
+    FruitDTO add(FruitDTO fruitDTO);
+    FruitDTO update(FruitDTO fruitDTO);
+    boolean delete(ObjectId fruitId);
     FruitDTO get(String name);
-
+    List<FruitDTO> findAll();
+    PageableDTO<FruitDTO> findAll(int page, int size);
 }

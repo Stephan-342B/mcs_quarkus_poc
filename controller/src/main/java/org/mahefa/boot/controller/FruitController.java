@@ -1,8 +1,10 @@
 package org.mahefa.boot.controller;
 
+import org.bson.types.ObjectId;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.mahefa.application.fruit.FruitApplication;
-import org.mahefa.data_transfert_object.FruitDTO;
+import org.mahefa.dto.FruitDTO;
+import org.mahefa.dto.PageableDTO;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -19,9 +21,30 @@ public class FruitController {
 
     @POST
     @Path("/create")
-    @Tag(name = "Create a fruit", description = "Add a fruit")
-    public List<FruitDTO> add(FruitDTO fruitDTO) {
+    @Tag(name = "Create a fruit", description = "Add fruit")
+    public FruitDTO add(FruitDTO fruitDTO) {
         return this.fruitApplication.add(fruitDTO);
+    }
+
+    @PUT
+    @Path("/update")
+    @Tag(name = "Update a fruit", description = "Modify a fruit")
+    public FruitDTO update(FruitDTO fruitDTO) {
+        return this.fruitApplication.update(fruitDTO);
+    }
+
+    @DELETE
+    @Path("/delete/{fruit_id}")
+    @Tag(name = "Delete a fruit", description = "Remove a fruit")
+    public boolean delete(@PathParam("fruit_id") ObjectId fruitId) {
+        return this.fruitApplication.delete(fruitId);
+    }
+
+    @GET
+    @Path("/get/{name}")
+    @Tag(name = "Get a fruit", description = "Find specific fruit")
+    public FruitDTO findByName(@PathParam("name") String name) {
+        return this.fruitApplication.get(name);
     }
 
     @GET
@@ -32,9 +55,9 @@ public class FruitController {
     }
 
     @GET
-    @Path("/get/{name}")
-    @Tag(name = "Get a fruit", description = "Find specific fruit")
-    public FruitDTO findByName(@PathParam("name") String name) {
-        return this.fruitApplication.get(name);
+    @Path("/list")
+    @Tag(name = "Pageable list", description = "Pageable list")
+    public PageableDTO<FruitDTO> findAll(@QueryParam("page") int page, @QueryParam("size") int size) {
+        return this.fruitApplication.findAll(page, size);
     }
 }

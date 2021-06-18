@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.mahefa</groupId>
     <artifactId>mcs_quarkus_poc</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
+
+  <modelVersion>4.0.0</modelVersion>
   <artifactId>repository</artifactId>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
   </properties>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -26,7 +30,7 @@
     <dependency>
       <groupId>org.mahefa</groupId>
       <artifactId>data</artifactId>
-      <version>${pom.version}</version>
+      <version>${project.version}</version>
       <scope>compile</scope>
     </dependency>
     <dependency>
@@ -42,13 +46,14 @@
       <artifactId>jakarta.transaction-api</artifactId>
     </dependency>
   </dependencies>
+
   <build>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven.compiler.plugin.version}</version>
         <configuration>
-          <source>8</source>
-          <target>8</target>
+          <release>11</release>
         </configuration>
       </plugin>
     </plugins>
