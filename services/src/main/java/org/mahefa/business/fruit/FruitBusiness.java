@@ -1,5 +1,6 @@
 package org.mahefa.business.fruit;
 
+import io.quarkus.panache.common.Sort;
 import org.bson.types.ObjectId;
 import org.mahefa.domain_object.Fruit;
 
@@ -12,5 +13,6 @@ public interface FruitBusiness {
     Fruit findByName(String name);
     List<Fruit> findAll();
     List<Fruit> findAll(int page, int size);
+    List<Fruit> keySetPagination(int size, Sort sort, ObjectId... id);
     long count();
 }

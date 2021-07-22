@@ -5,15 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.bson.types.ObjectId;
 
 @MongoEntity(collection="fruit")
 @Data
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class Fruit {
-    private ObjectId id;
+public class Fruit extends Entity {
     private String name;
     private String description;
     private Long creationDate;

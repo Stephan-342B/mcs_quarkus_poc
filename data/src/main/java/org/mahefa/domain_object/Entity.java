@@ -1,4 +1,4 @@
-package org.mahefa.dto;
+package org.mahefa.domain_object;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,10 +10,6 @@ import org.bson.types.ObjectId;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class FruitDTO extends ObjectDTO {
+public class Entity {
     private ObjectId id;
-    private String name;
-    private String description;
-    private Long creationDate;
-    private Long modificationDate;
 }

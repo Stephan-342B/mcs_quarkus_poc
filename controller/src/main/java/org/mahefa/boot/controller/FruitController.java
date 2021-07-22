@@ -1,10 +1,11 @@
 package org.mahefa.boot.controller;
 
+import io.quarkus.panache.common.Sort;
 import org.bson.types.ObjectId;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import org.mahefa.application.fruit.FruitApplication;
 import org.mahefa.dto.FruitDTO;
-import org.mahefa.dto.PageableDTO;
+import org.mahefa.dto.Pageable;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -30,34 +31,42 @@ public class FruitController {
     @Path("/update")
     @Tag(name = "Update a fruit", description = "Modify a fruit")
     public FruitDTO update(FruitDTO fruitDTO) {
-        return this.fruitApplication.update(fruitDTO);
+        return fruitApplication.update(fruitDTO);
     }
 
     @DELETE
     @Path("/delete/{fruit_id}")
     @Tag(name = "Delete a fruit", description = "Remove a fruit")
     public boolean delete(@PathParam("fruit_id") ObjectId fruitId) {
-        return this.fruitApplication.delete(fruitId);
+        return fruitApplication.delete(fruitId);
     }
 
     @GET
     @Path("/get/{name}")
     @Tag(name = "Get a fruit", description = "Find specific fruit")
     public FruitDTO findByName(@PathParam("name") String name) {
-        return this.fruitApplication.get(name);
+        return fruitApplication.get(name);
     }
 
     @GET
     @Path("/get/all")
     @Tag(name = "Get all fruits", description = "Retrieve all the fruits")
     public List<FruitDTO> findAll() {
-        return this.fruitApplication.findAll();
+        return fruitApplication.findAll();
     }
 
     @GET
     @Path("/list")
-    @Tag(name = "Pageable list", description = "Pageable list")
-    public PageableDTO<FruitDTO> findAll(@QueryParam("page") int page, @QueryParam("size") int size) {
-        return this.fruitApplication.findAll(page, size);
+    @Tag(name = "Pageable list", description = "Classical pageable. MongoDB will generate a find query combined with skip and limit function. Not recommended for larger data as skip and limit are time consuming")
+    public Pageable<FruitDTO> findAll(@QueryParam("page") int page, @QueryParam("size") int size) {
+        return fruitApplication.findAll(page, size);
+    }
+
+    @GET
+    @Path("/keyset-pagination/list")
+    @Tag(name = "Fast pageable list", description = "A fast pageable system for large data. This method use _id field as key as it's automatically indexed by MongoDB")
+    public Pageable<FruitDTO> keySetPagination(@QueryParam("page") int page, @QueryParam("size") int size, @QueryParam("currentId") ObjectId id,
+                                               @QueryParam("sortDirection") Sort.Direction direction) {
+        return fruitApplication.findAll(page, size, id, direction);
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Slf4j
-public class PageableDTO<T> {
+public class Pageable<T> {
     private List<T> data;
     private long count;
     private int page;

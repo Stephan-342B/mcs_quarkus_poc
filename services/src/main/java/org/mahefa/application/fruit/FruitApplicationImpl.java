@@ -1,12 +1,13 @@
 package org.mahefa.application.fruit;
 
+import io.quarkus.panache.common.Sort;
 import io.smallrye.mutiny.Uni;
 import org.bson.types.ObjectId;
 import org.mahefa.annotation.Service;
 import org.mahefa.business.fruit.FruitBusiness;
-import org.mahefa.dto.FruitDTO;
 import org.mahefa.domain_object.Fruit;
-import org.mahefa.dto.PageableDTO;
+import org.mahefa.dto.FruitDTO;
+import org.mahefa.dto.Pageable;
 import org.mahefa.mapper.fruit.FruitMapper;
 
 import javax.inject.Inject;
@@ -50,31 +51,42 @@ public class FruitApplicationImpl implements FruitApplication {
 
     @Override
     public List<FruitDTO> findAll() {
-        return this.fruitMapper.toDTOs(this.fruitBusiness.findAll());
+        return this.fruitMapper.toDTO(this.fruitBusiness.findAll());
     }
 
     @Override
-    public PageableDTO<FruitDTO> findAll(int page, int size) {
+    public Pageable<FruitDTO> findAll(int page, int size) {
         return Uni.combine().all()
                 .unis(findAllFruits(page, size), count())
                 .asTuple()
                 .onItem()
-                .apply(
-                        tuple -> {
-                            PageableDTO pageableDTO =  new PageableDTO();
-                            pageableDTO.setPage(page);
-                            pageableDTO.setSize(size);
-                            pageableDTO.setData(tuple.getItem1());
-                            pageableDTO.setCount(tuple.getItem2());
-                            return  pageableDTO;
-                        }).await().indefinitely();
+                .apply(tuple -> {
+                    return fruitMapper.toPageableDTO(tuple.getItem1(), tuple.getItem2(), page, size);
+                }).await().indefinitely();
+    }
+
+    @Override
+    public Pageable<FruitDTO> findAll(int page, int size, ObjectId id, Sort.Direction direction) {
+        return Uni.combine().all()
+                .unis(keySetPagination(size, id, direction), count())
+                .asTuple()
+                .onItem()
+                .apply(tuple -> {
+                    return fruitMapper.toPageableDTO(tuple.getItem1(), tuple.getItem2(), page, size);
+                }).await().indefinitely();
     }
 
     private Uni<Long> count() {
         return Uni.createFrom().completionStage(CompletableFuture.supplyAsync(() -> fruitBusiness.count()));
     }
 
-    private Uni<List<FruitDTO>> findAllFruits(int page, int size) {
-        return Uni.createFrom().completionStage(CompletableFuture.supplyAsync(() -> fruitMapper.toDTOs(fruitBusiness.findAll(page, size))));
+    private Uni<List<Fruit>> findAllFruits(int page, int size) {
+        return Uni.createFrom().completionStage(CompletableFuture.supplyAsync(() -> fruitBusiness.findAll(page, size)));
+    }
+
+    private Uni<List<Fruit>> keySetPagination(int size, ObjectId id, Sort.Direction direction) {
+        return Uni.createFrom().completionStage(CompletableFuture.supplyAsync(() ->
+                fruitBusiness.keySetPagination(size, Sort.by("_id", direction), id)
+        ));
     }
 }
